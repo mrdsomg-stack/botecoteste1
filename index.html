@@ -8,6 +8,13 @@
         body {
             font-family: Arial, sans-serif;
             background: #f8f0e3;
+            /* Início das novas propriedades para a imagem de fundo */
+            background-image: url('https://files.gloriafood.com/site/e301217e58a2d33457193237e19f7988.png'); /* URL da sua imagem */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            /* Fim das novas propriedades */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,7 +22,7 @@
             margin: 0;
         }
         .container {
-            background: #fff3e0;
+            background: rgba(255, 243, 224, 0.9); /* Adicionado um fundo semi-transparente para o container */
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -27,7 +34,7 @@
             margin-bottom: 20px;
             color: #d35400;
         }
-        input {
+        input, select {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -55,10 +62,6 @@
             margin-top: 10px;
             text-align: left;
         }
-        .bebida-opcoes {
-            text-align: left;
-            margin: 10px 0;
-        }
     </style>
 </head>
 <body>
@@ -71,17 +74,11 @@
         <label for="endereco">Endereço:</label>
         <input type="text" id="endereco" placeholder="Seu endereço" required>
 
-        <label>Escolha as Bebidas:</label>
-        <div class="bebida-opcoes">
-            <div>
-                <input type="checkbox" id="Brahma" name="bebida" value="Brahma 600ml">
-                <label for="bhama" style="display: inline;">Brahma 600ml</label>
-            </div>
-            <div>
-                <input type="checkbox" id="Antarctica" name="bebida" value="Antarctica 600ml">
-                <label for="antartica" style="display: inline;">Antarctica 600ml</label>
-            </div>
-        </div>
+        <label for="bebidas">Escolha as Bebidas:</label>
+        <select id="bebidas" multiple size="2">
+            <option value="Bhama 600ml">Bhama 600ml</option>
+            <option value="Antartica 600ml">Antartica 600ml</option>
+        </select>
 
         <button onclick="enviar()">Fazer Pedido</button>
     </div>
@@ -90,13 +87,7 @@
         function enviar() {
             let nome = document.getElementById("nome").value.trim();
             let endereco = document.getElementById("endereco").value.trim();
-            
-            let bebidasSelecionadas = [];
-            let checkboxes = document.querySelectorAll('input[name="bebida"]:checked');
-            
-            checkboxes.forEach((checkbox) => {
-                bebidasSelecionadas.push(checkbox.value);
-            });
+            let bebidas = Array.from(document.getElementById("bebidas").selectedOptions).map(option => option.value);
 
             if(nome === "" || endereco === "") {
                 alert("Por favor, preencha Nome e Endereço!");
@@ -104,8 +95,8 @@
             }
 
             let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}.`;
-            if (bebidasSelecionadas.length > 0) {
-                mensagem += ` Bebidas: ${bebidasSelecionadas.join(', ')}.`;
+            if (bebidas.length > 0) {
+                mensagem += ` Bebidas: ${bebidas.join(', ')}.`;
             }
 
             let url = "https://wa.me/5598985909434?text=" + encodeURIComponent(mensagem);
